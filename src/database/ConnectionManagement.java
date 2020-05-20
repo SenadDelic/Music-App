@@ -4,27 +4,23 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConnectionManager {
-    private static ConnectionManager instance = null;
-
-    private static final String USERNAME = "someLongBadassUsername";
-    private static final String PASSWORD = "sameThingForPassword";
-    private static final String URL = Constants.CONNECTION_STRING + Constants.TIME_ZONE_ERROR;
-
+public class ConnectionManagement {
+    private static ConnectionManagement instance = null;
+    private static final String URL = Constants.CONNECTION_STRING;
     private Connection connection = null;
 
-    private ConnectionManager() {
+    private ConnectionManagement() {
     }
 
-    public static ConnectionManager getInstance() {
+    public static ConnectionManagement getInstance() {
         if (instance == null)
-            instance = new ConnectionManager();
+            instance = new ConnectionManagement();
         return instance;
     }
 
     public boolean openConnection() {
         try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            connection = DriverManager.getConnection(URL);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,6 +43,7 @@ public class ConnectionManager {
         try {
             connection.close();
             connection = null;
+            System.out.println("Connection closed!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
