@@ -4,17 +4,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConnectionManager {
-    private static ConnectionManager instance = null;
+public class ConnectionManagement {
+    private static ConnectionManagement instance = null;
     private static final String URL = Constants.CONNECTION_STRING;
     private Connection connection = null;
 
-    private ConnectionManager() {
+    private ConnectionManagement() {
     }
 
-    public static ConnectionManager getInstance() {
+    public static ConnectionManagement getInstance() {
         if (instance == null)
-            instance = new ConnectionManager();
+            instance = new ConnectionManagement();
         return instance;
     }
 
