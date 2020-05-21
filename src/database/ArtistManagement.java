@@ -1,6 +1,8 @@
 package database;
 
 import model.Artist;
+import model.Song;
+import model.SongArtist;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -41,5 +43,29 @@ public class ArtistManagement {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public List<SongArtist> queryArtistForSong(String songName) {
+        StringBuilder sb = new StringBuilder(Constants.QUERY_ARTISTS_FOR_SONG_START);
+        sb.append(songName);
+        sb.append("\"");
+
+        try (Statement statement = ConnectionManagement.getInstance().getConnection().createStatement();
+             ResultSet resultSet = statement.executeQuery(sb.toString())) {
+
+            List<SongArtist> songArtists = new ArrayList<>();
+            while (resultSet.next()) {
+                SongArtist songArtist = new SongArtist();
+                songArtist.setArtistName(resultSet.getString(1));
+                songArtist.setAlbumName(resultSet.getString(2));
+                songArtist.setTrack(resultSet.getInt(3));
+
+                songArtists.add(songArtist);
+            }
+            return songArtists;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
