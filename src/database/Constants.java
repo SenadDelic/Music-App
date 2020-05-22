@@ -42,4 +42,6 @@ public class Constants {
                     " INNER JOIN " + TABLE_ARTIST + " ON " +
                     TABLE_ALBUMS + "." + COLUMN_ALBUM_ARTIST + " = " + TABLE_ARTIST + "." + COLUMN_ARTIST_ID +
                     " WHERE " + TABLE_SONGS + "." + COLUMN_SONG_TITLE + " = \"";
+    public static final String DELETE_ARTIST = "DELETE FROM " + TABLE_ARTIST + " WHERE name = ?";
+    public static final String UPDATE_ARTIST_NAME = "UPDATE " + TABLE_ARTIST + " SET " + " name = ? " + " WHERE name = ?";
 }

@@ -1,7 +1,6 @@
 package database;
 
 import model.Artist;
-import model.Song;
 import model.SongArtist;
 
 import java.sql.*;
@@ -46,14 +45,13 @@ public class ArtistManagement {
     }
 
     public List<SongArtist> queryArtistForSong(String songName) {
-        StringBuilder sb = new StringBuilder(Constants.QUERY_ARTISTS_FOR_SONG_START);
-        sb.append(songName);
-        sb.append("\"");
+        String sb = Constants.QUERY_ARTISTS_FOR_SONG_START + songName + "\"";
 
         try (Statement statement = ConnectionManagement.getInstance().getConnection().createStatement();
-             ResultSet resultSet = statement.executeQuery(sb.toString())) {
+             ResultSet resultSet = statement.executeQuery(sb)) {
 
             List<SongArtist> songArtists = new ArrayList<>();
+
             while (resultSet.next()) {
                 SongArtist songArtist = new SongArtist();
                 songArtist.setArtistName(resultSet.getString(1));
@@ -66,6 +64,28 @@ public class ArtistManagement {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void deleteArtist(String artistName) {
+        try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().prepareStatement(Constants.DELETE_ARTIST)) {
+            preparedStatement.setString(1, artistName);
+
+            System.out.println(preparedStatement.executeUpdate() == 1 ? artistName + " is deleted" : "There is no " + artistName + " artist!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Setting update with id?
+    public void updateArtist(String artistNewName, String artistOldName) {
+        try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().prepareStatement(Constants.UPDATE_ARTIST_NAME)) {
+            preparedStatement.setString(1, artistNewName);
+            preparedStatement.setString(2, artistOldName);
+
+            System.out.println(preparedStatement.executeUpdate() == 1 ? artistOldName + " is updated to " + artistNewName : "Something went wrong");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
