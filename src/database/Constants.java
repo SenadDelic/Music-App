@@ -28,13 +28,13 @@ public class Constants {
     public static final int INDEX_SONG_TITLE = 3;
     public static final int INDEX_SONG_ALBUM = 4;
 
-
+    // ARTIST
     public static final String QUERY_ARTIST =
             "SELECT * FROM " + Constants.TABLE_ARTIST;
     public static final String INSERT_ARTIST = "INSERT INTO " + TABLE_ARTIST + "(" + COLUMN_ARTIST_NAME + ")" +
             "VALUES (?)";
     public static final String QUERY_ARTISTS_FOR_SONG_START =
-            "SELECT " + TABLE_ARTIST + "." + COLUMN_ARTIST_NAME + ", "+
+            "SELECT " + TABLE_ARTIST + "." + COLUMN_ARTIST_NAME + ", " +
                     TABLE_ALBUMS + "." + COLUMN_ALBUM_NAME + ", " +
                     TABLE_SONGS + "." + COLUMN_SONG_TRACK + " FROM " + TABLE_SONGS +
                     " INNER JOIN " + TABLE_ALBUMS + " ON " +
