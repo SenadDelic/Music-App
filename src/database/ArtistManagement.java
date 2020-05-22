@@ -8,43 +8,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArtistManagement {
+    List<Artist> artistList;
 
     public ArtistManagement() {
+        artistList = new ArrayList<>();
     }
 
     public List<Artist> queryArtist() {
         try (Statement statement = ConnectionManagement.getInstance().getConnection().createStatement();
              ResultSet resultSet = statement.executeQuery(Constants.QUERY_ARTIST)) {
 
-            List<Artist> artists = new ArrayList<>();
             while (resultSet.next()) {
                 Artist artist = new Artist();
                 artist.setId(resultSet.getInt(Constants.INDEX_ARTIST_ID));
                 artist.setName(resultSet.getString(Constants.INDEX_ARTIST_NAME));
-                artists.add(artist);
+                artistList.add(artist);
             }
-            return artists;
+            return artistList;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public int insertArtist(String name) throws Exception {
-        try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().
-                prepareStatement(Constants.INSERT_ARTIST)) {
-            preparedStatement.setString(1, name);
+    public boolean insertArtist(String name) throws Exception {
+        if (!doesArtistExist(name)) {
+            ResultSet generateKey = null;
 
-            int affected = preparedStatement.executeUpdate();
-            if (affected != 1)
-                throw new Exception("Couldn't insert artist!");
+            try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().
+                    prepareStatement(Constants.INSERT_ARTIST)) {
+                preparedStatement.setString(1, name);
 
-            ResultSet generateKey = preparedStatement.getGeneratedKeys();
-            return generateKey.getInt(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
+                if (preparedStatement.executeUpdate() != 1)
+                    throw new Exception("Couldn't insert artist!");
+
+                generateKey = preparedStatement.getGeneratedKeys();
+                System.out.println(generateKey.next() ? "Id of artist" + name + " is " + generateKey : "Can't return id");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (generateKey != null) generateKey.close();
+            }
+            return true;
+        } else {
+            System.out.println("Something is wrong");
+            return false;
         }
-        return 0;
+    }
+
+    public boolean doesArtistExist(String name) {
+        artistList = queryArtist();
+        return artistList.stream().anyMatch(artist -> artist.getName().equals(name));
     }
 
     public List<SongArtist> queryArtistForSong(String songName) {
@@ -81,6 +95,7 @@ public class ArtistManagement {
     }
 
     // Setting update with id?
+    // Replace artistOldName, let user enter ..
     public void updateArtist(String artistNewName, String artistOldName) {
         try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().prepareStatement(Constants.UPDATE_ARTIST_NAME)) {
             preparedStatement.setString(1, artistNewName);

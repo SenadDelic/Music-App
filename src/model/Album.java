@@ -5,7 +5,8 @@ public class Album {
     private String name;
     private int artistId;
 
-
+    public Album() {
+    }
 
     public int getId() {
         return id;
