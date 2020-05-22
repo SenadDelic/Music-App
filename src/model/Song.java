@@ -6,6 +6,9 @@ public class Song {
     private int albumId;
     private String name;
 
+    public Song() {
+    }
+
     public int getId() {
         return id;
     }

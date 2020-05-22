@@ -9,6 +9,9 @@ import java.util.List;
 
 public class ArtistManagement {
 
+    public ArtistManagement() {
+    }
+
     public List<Artist> queryArtist() {
         try (Statement statement = ConnectionManagement.getInstance().getConnection().createStatement();
              ResultSet resultSet = statement.executeQuery(Constants.QUERY_ARTIST)) {

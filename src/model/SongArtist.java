@@ -5,6 +5,9 @@ public class SongArtist {
     private String artistName;
     private String albumName;
 
+    public SongArtist() {
+    }
+
     public int getTrack() {
         return track;
     }
