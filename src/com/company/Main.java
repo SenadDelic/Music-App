@@ -3,8 +3,10 @@ package com.company;
 import database.AlbumManagement;
 import database.ArtistManagement;
 import database.ConnectionManagement;
+import database.SongManagement;
 import model.Album;
 import model.Artist;
+import model.Song;
 
 import java.util.List;
 
@@ -14,7 +16,9 @@ public class Main {
 
         ConnectionManagement.getInstance().openConnection();
         //testArtist();
-        testAlbum();
+        //testAlbum();
+
+        testSong();
 
         ConnectionManagement.getInstance().closeConnection();
     }
@@ -36,6 +40,18 @@ public class Main {
 
         List<Artist> artists = artistManagement.queryArtist();
         artists.stream().map(artist -> "ID = " + artist.getId() + " Name = " + artist.getName()).forEach(System.out::println);
+
+    }
+
+    public static void testSong() throws Exception {
+        SongManagement songManagement = new SongManagement();
+        List<Song> songList = songManagement.querySongs();
+
+        songList.stream().map(song -> "ID = " + song.getId() + " Track = " + song.getTrack() + " Album ID = " + song.getAlbumId() +
+                " Title = " + song.getTitle()).forEach(System.out::println);
+
+        songManagement.insertSong("SomeOfTheSongs", "BubaJala", "23", 2);
+
 
     }
 }

@@ -4,7 +4,7 @@ public class Song {
     private int id;
     private int track;
     private int albumId;
-    private String name;
+    private String title;
 
     public Song() {
     }
@@ -33,11 +33,11 @@ public class Song {
         this.albumId = albumId;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

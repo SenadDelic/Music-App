@@ -31,10 +31,9 @@ public class ArtistManagement {
         }
     }
 
-    public boolean insertArtist(String name) throws Exception {
+    public int insertArtist(String name) throws Exception {
+        ResultSet generateKey = null;
         if (!doesArtistExist(name)) {
-            ResultSet generateKey = null;
-
             try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().
                     prepareStatement(Constants.INSERT_ARTIST)) {
                 preparedStatement.setString(1, name);
@@ -43,17 +42,15 @@ public class ArtistManagement {
                     throw new Exception("Couldn't insert artist!");
 
                 generateKey = preparedStatement.getGeneratedKeys();
-                System.out.println(generateKey.next() ? "Id of artist" + name + " is " + generateKey : "Can't return id");
+                return generateKey.getInt(1);
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
                 if (generateKey != null) generateKey.close();
             }
-            return true;
-        } else {
+        } else
             System.out.println("Something is wrong");
-            return false;
-        }
+        return -1;
     }
 
     public boolean doesArtistExist(String name) {

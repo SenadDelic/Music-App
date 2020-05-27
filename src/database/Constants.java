@@ -35,7 +35,7 @@ public class Constants {
     public static final String DELETE_ALBUM = "DELETE FROM " + TABLE_ALBUMS + " WHERE " + COLUMN_ALBUM_NAME + " = ?";
     String sql = "UPDATE albums SET name = ?, artist = ? WHERE name = ?";
     public static final String UPDATE_ALBUM_BASED_ON_NAME = "UPDATE " + TABLE_ALBUMS + " SET " + COLUMN_ALBUM_NAME + " = ?, " +
-            COLUMN_ALBUM_ARTIST + " = ?" + " WHERE " +  COLUMN_ALBUM_NAME + " = ?";
+            COLUMN_ALBUM_ARTIST + " = ?" + " WHERE " + COLUMN_ALBUM_NAME + " = ?";
 
     // ARTIST
     public static final String QUERY_ARTIST =
@@ -54,4 +54,12 @@ public class Constants {
     public static final String DELETE_ARTIST = "DELETE FROM " + TABLE_ARTIST + " WHERE name = ?";
     public static final String UPDATE_ARTIST_NAME = "UPDATE " + TABLE_ARTIST + " SET " + COLUMN_ARTIST_NAME +
             "= ? " + " WHERE " + COLUMN_ARTIST_NAME + "= ?";
+
+    // Song
+    public static final String INSERT_SONGS = "INSERT INTO " + TABLE_SONGS +
+            '(' + COLUMN_SONG_TRACK + ", " + COLUMN_SONG_TITLE + ", " + COLUMN_SONG_ALBUM +
+            ") VALUES(?, ?, ?)";
+    public static final String DELETE_SONG = "DELETE FROM " + TABLE_SONGS + " WHERE title = ?";
+    public static final String UPDATE_SONG_TITLE = "UPDATE " + TABLE_SONGS + " SET " + COLUMN_SONG_TITLE + "= ?" +
+            "WHERE " + COLUMN_SONG_TITLE + "= ?";
 }

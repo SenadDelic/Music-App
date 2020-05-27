@@ -35,7 +35,7 @@ public class AlbumManagement {
         }
     }
 
-    public boolean insertAlbum(String albumName, int albumId) throws SQLException {
+    public int insertAlbum(String albumName, int albumId) throws SQLException {
         if (!doesAlbumExist(albumName)) {
             ResultSet resultSet = null;
 
@@ -47,17 +47,15 @@ public class AlbumManagement {
                     throw new Exception("Can't insert album");
 
                 resultSet = preparedStatement.getGeneratedKeys();
-                System.out.println(resultSet.next() ? "Id of entered album is = " + resultSet.getInt(1) : "Can't return id");
+                return resultSet.getInt(1);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 if (resultSet != null) resultSet.close();
             }
-            return true;
-        } else {
+        } else
             System.out.println(albumName + " already exist.");
-            return false;
-        }
+        return -1;
     }
 
     public void deleteAlbum(String album) {
@@ -84,7 +82,7 @@ public class AlbumManagement {
     }
 
     // find better solution ?
-    public boolean doesAlbumExist(String name){
+    public boolean doesAlbumExist(String name) {
         albumList = queryAlbum();
         return albumList.stream().anyMatch(album -> album.getName().equals(name));
     }
