@@ -17,9 +17,8 @@ public class SongManagement {
     }
 
     public List<Song> querySongs() {
-        String sql = "SELECT * FROM songs";
         try (Statement statement = ConnectionManagement.getInstance().getConnection().createStatement();
-             ResultSet resultset = statement.executeQuery(sql)) {
+             ResultSet resultset = statement.executeQuery(Constants.QUERY_SONG)) {
 
             while (resultset.next()) {
                 Song song = new Song();
@@ -61,21 +60,12 @@ public class SongManagement {
                 } else
                     throw new SQLException();
             } catch (SQLException e) {
-                System.out.println("Insert song exception: " + e.getMessage());
-                try {
-                    System.out.println("Rollback");
-                    ConnectionManagement.getInstance().getConnection().rollback();
-                } catch (SQLException e2) {
-                    e2.printStackTrace();
-                }
+                System.out.println("Rollback");
+                ConnectionManagement.getInstance().getConnection().rollback();
                 e.printStackTrace();
             } finally {
-                try {
-                    System.out.println("Resetting default commit behavior");
-                    ConnectionManagement.getInstance().getConnection().setAutoCommit(true);
-                } catch (SQLException e) {
-                    System.out.println("Can't reset auto-commit " + e.getMessage());
-                }
+                System.out.println("Auto-commit");
+                ConnectionManagement.getInstance().getConnection().setAutoCommit(true);
             }
         }
     }

@@ -62,4 +62,7 @@ public class Constants {
     public static final String DELETE_SONG = "DELETE FROM " + TABLE_SONGS + " WHERE title = ?";
     public static final String UPDATE_SONG_TITLE = "UPDATE " + TABLE_SONGS + " SET " + COLUMN_SONG_TITLE + "= ?" +
             "WHERE " + COLUMN_SONG_TITLE + "= ?";
+    public static final String QUERY_SONG = "SELECT * FROM " + TABLE_SONGS;
+
+
 }
