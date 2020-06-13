@@ -6,16 +6,17 @@ import model.SongArtist;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class ArtistManagement {
-    List<Artist> artistList;
+    private List<Artist> artistList;
 
     public ArtistManagement() {
         artistList = new ArrayList<>();
     }
 
-    public List<Artist> queryArtist() {
-        try (Statement statement = ConnectionManagement.getInstance().getConnection().createStatement();
+    public List<Artist> queryArtist(Connection connection) {
+        try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(Constants.QUERY_ARTIST)) {
 
             while (resultSet.next()) {
@@ -25,39 +26,40 @@ public class ArtistManagement {
                 artistList.add(artist);
             }
             return artistList;
+            //artistList.stream().map(artist -> "Id = " + artist.getId() + " Name = " + artist.getName()).forEach(System.out::println);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
-    public boolean insertArtist(String name) throws Exception {
-        if (!doesArtistExist(name)) {
-            ResultSet generateKey = null;
+    public int insertArtist(Scanner input, Connection connection) throws SQLException {
+        System.out.print("Enter artist name: ");
+        String name = input.next();
 
-            try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().
+        ResultSet generateKey = null;
+        if (!doesArtistExist(name, connection)) {
+            try (PreparedStatement preparedStatement = connection.
                     prepareStatement(Constants.INSERT_ARTIST)) {
                 preparedStatement.setString(1, name);
 
                 if (preparedStatement.executeUpdate() != 1)
-                    throw new Exception("Couldn't insert artist!");
+                    throw new SQLException("Couldn't insert artist!");
 
                 generateKey = preparedStatement.getGeneratedKeys();
-                System.out.println(generateKey.next() ? "Id of artist" + name + " is " + generateKey : "Can't return id");
+                return generateKey.getInt(1);
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
                 if (generateKey != null) generateKey.close();
             }
-            return true;
-        } else {
-            System.out.println("Something is wrong");
-            return false;
-        }
+        } else
+            System.out.println("There is already " + name);
+        return -1;
     }
 
-    public boolean doesArtistExist(String name) {
-        artistList = queryArtist();
+    public boolean doesArtistExist(String name, Connection connection) {
+        artistList = queryArtist(connection);
         return artistList.stream().anyMatch(artist -> artist.getName().equals(name));
     }
 
@@ -66,7 +68,6 @@ public class ArtistManagement {
 
         try (Statement statement = ConnectionManagement.getInstance().getConnection().createStatement();
              ResultSet resultSet = statement.executeQuery(sb)) {
-
             List<SongArtist> songArtists = new ArrayList<>();
 
             while (resultSet.next()) {
@@ -84,7 +85,9 @@ public class ArtistManagement {
         }
     }
 
-    public void deleteArtist(String artistName) {
+    public void deleteArtist(Scanner input) {
+        System.out.print("Enter artist name: ");
+        String artistName = input.nextLine();
         try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().prepareStatement(Constants.DELETE_ARTIST)) {
             preparedStatement.setString(1, artistName);
 
@@ -96,7 +99,12 @@ public class ArtistManagement {
 
     // Setting update with id?
     // Replace artistOldName, let user enter ..
-    public void updateArtist(String artistNewName, String artistOldName) {
+    public void updateArtist(Scanner input) {
+        System.out.print("Enter what artist you want to rename: ");
+        String artistOldName = input.next();
+        System.out.println("Enter new artist name: ");
+        String artistNewName = input.next();
+
         try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().prepareStatement(Constants.UPDATE_ARTIST_NAME)) {
             preparedStatement.setString(1, artistNewName);
             preparedStatement.setString(2, artistOldName);
