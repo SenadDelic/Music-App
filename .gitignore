@@ -1,2 +1,4 @@
 .idea/
 Music App.iml
+out/
+music.db
