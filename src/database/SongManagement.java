@@ -2,12 +2,10 @@ package database;
 
 import model.Song;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class SongManagement {
     List<Song> songs;
@@ -36,7 +34,16 @@ public class SongManagement {
         }
     }
 
-    public void insertSong(String title, String artist, String album, int track) throws Exception {
+    public void insertSong(Scanner input, Connection connection) throws SQLException {
+        System.out.print("Enter title of the song: ");
+        String title = input.nextLine();
+        System.out.print("Enter name of the artist: ");
+        String artist = input.nextLine();
+        System.out.print("Enter album name: ");
+        String album = input.nextLine();
+        System.out.print("Enter track id: ");
+        int track = input.nextInt();
+
         if (isSongExist(title)) {
             System.out.println("This title already exist");
         } else {
@@ -46,9 +53,9 @@ public class SongManagement {
                 ArtistManagement artistManagement = new ArtistManagement();
                 AlbumManagement albumManagement = new AlbumManagement();
 
-                int artistId = artistManagement.insertArtist(artist);
+                int artistId = artistManagement.insertArtist(input, connection);
                 System.out.println("Artist id = " + artistId);
-                int albumId = albumManagement.insertAlbum(album, artistId);
+                int albumId = albumManagement.insertAlbum(input, connection);
                 System.out.println("Album id " + albumId);
 
                 if (artistId != -1 && albumId != -1) {
@@ -75,7 +82,10 @@ public class SongManagement {
         return songs.stream().anyMatch(song -> song.getTitle().equals(title));
     }
 
-    public void deleteSong(String title) {
+    public void deleteSong(Scanner input) {
+        System.out.print("Enter song title: ");
+        String title = input.nextLine();
+
         try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().prepareStatement(Constants.DELETE_SONG)) {
             preparedStatement.setString(1, title);
 
@@ -86,7 +96,12 @@ public class SongManagement {
     }
 
     // add update for track !!
-    public void updateSong(String title, String oldTitle) {
+    public void updateSong(Scanner input) {
+        System.out.print("Enter what song you want to rename = ");
+        String oldTitle = input.next();
+        System.out.print("Enter new song name: ");
+        String title = input.next();
+
         try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().prepareStatement(Constants.UPDATE_SONG_TITLE)) {
             preparedStatement.setString(1, title);
             preparedStatement.setString(2, oldTitle);

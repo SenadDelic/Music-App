@@ -2,22 +2,20 @@ package database;
 
 import model.Album;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class AlbumManagement {
-    List<Album> albumList;
+    private List<Album> albumList;
 
     public AlbumManagement() {
         albumList = new ArrayList<>();
     }
 
-    public List<Album> queryAlbum() {
-        try (Statement statement = ConnectionManagement.getInstance().getConnection().createStatement();
+    public List<Album> queryAlbum(Connection connection) {
+        try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(Constants.QUERY_ALBUM)) {
 
             while (resultSet.next()) {
@@ -35,11 +33,16 @@ public class AlbumManagement {
         }
     }
 
-    public int insertAlbum(String albumName, int albumId) throws SQLException {
-        if (!doesAlbumExist(albumName)) {
+    public int insertAlbum(Scanner input, Connection connection) throws SQLException {
+        System.out.print("Enter album name: ");
+        String albumName = input.next();
+        System.out.print("Enter album id: ");
+        int albumId = input.nextInt();
+
+        if (!doesAlbumExist(albumName, connection)) {
             ResultSet resultSet = null;
 
-            try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().prepareStatement(Constants.INSERT_ALBUMS)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(Constants.INSERT_ALBUMS)) {
                 preparedStatement.setString(1, albumName);
                 preparedStatement.setInt(2, albumId);
 
@@ -58,7 +61,10 @@ public class AlbumManagement {
         return -1;
     }
 
-    public void deleteAlbum(String album) {
+    public void deleteAlbum(Scanner input) {
+        System.out.print("Enter album name: ");
+        String album = input.nextLine();
+
         try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().prepareStatement(Constants.DELETE_ALBUM)) {
             preparedStatement.setString(1, album);
 
@@ -69,7 +75,17 @@ public class AlbumManagement {
     }
 
     // Replace oldName, let user enter..
-    public void updateAlbum(String newAlbumName, String oldName, int albumId) {
+    // String newAlbumName, String oldName, int albumId
+    public void updateAlbum(Scanner input) {
+        String newAlbumName, oldName;
+        int albumId;
+        System.out.print("Which album you want to rename: ");
+        oldName = input.next();
+        System.out.print("Enter new album name: ");
+        newAlbumName = input.next();
+        System.out.print("Enter albumId: ");
+        albumId = input.nextInt();
+
         try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().prepareStatement(Constants.UPDATE_ALBUM_BASED_ON_NAME)) {
             preparedStatement.setString(1, newAlbumName);
             preparedStatement.setInt(2, albumId);
@@ -82,8 +98,8 @@ public class AlbumManagement {
     }
 
     // find better solution ?
-    public boolean doesAlbumExist(String name) {
-        albumList = queryAlbum();
+    public boolean doesAlbumExist(String name, Connection connection) {
+        albumList = queryAlbum(connection);
         return albumList.stream().anyMatch(album -> album.getName().equals(name));
     }
 }
