@@ -36,7 +36,7 @@ public class Music {
                     artistManagement.insertArtist(input, connection);
                     break;
                 case 3:
-                     // get the \n
+                    // get the \n
                     songManagement.insertSong(input, connection);
                     break;
                 // bug with nextLine
@@ -70,7 +70,7 @@ public class Music {
                     break;
                 // bug with nextLine
                 case 10:
-                   // input.nextLine();
+                    // input.nextLine();
                     albumManagement.deleteAlbum(input);
                     break;
                 // bug with nextLine?
