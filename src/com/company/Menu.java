@@ -3,9 +3,9 @@ package com.company;
 public class Menu {
 
     public static void welcome() {
-        System.out.println("*************************************************");
+        System.out.println("*******************************************************");
         System.out.println("*********        WELCOME TO Music app         *********");
-        System.out.println("*************************************************");
+        System.out.println("*******************************************************");
     }
 
     public static void menu() {
@@ -27,7 +27,7 @@ public class Menu {
     }
 
     public static void exit() {
-        System.out.println("\n---------------------------------------------");
+        System.out.println("\n------------------------------------------------");
         System.out.println("********* Thank you. Have a nice day. **********");
         System.out.println("------------------------------------------------");
     }

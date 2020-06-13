@@ -35,7 +35,7 @@ public class AlbumManagement {
 
     public int insertAlbum(Scanner input, Connection connection) throws SQLException {
         System.out.print("Enter album name: ");
-        String albumName = input.next();
+        String albumName = input.nextLine();
         System.out.print("Enter album id: ");
         int albumId = input.nextInt();
 
@@ -80,9 +80,9 @@ public class AlbumManagement {
         String newAlbumName, oldName;
         int albumId;
         System.out.print("Which album you want to rename: ");
-        oldName = input.next();
+        oldName = input.nextLine();
         System.out.print("Enter new album name: ");
-        newAlbumName = input.next();
+        newAlbumName = input.nextLine();
         System.out.print("Enter albumId: ");
         albumId = input.nextInt();
 

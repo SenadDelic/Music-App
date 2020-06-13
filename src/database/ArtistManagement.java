@@ -101,9 +101,9 @@ public class ArtistManagement {
     // Replace artistOldName, let user enter ..
     public void updateArtist(Scanner input) {
         System.out.print("Enter what artist you want to rename: ");
-        String artistOldName = input.next();
+        String artistOldName = input.nextLine();
         System.out.println("Enter new artist name: ");
-        String artistNewName = input.next();
+        String artistNewName = input.nextLine();
 
         try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().prepareStatement(Constants.UPDATE_ARTIST_NAME)) {
             preparedStatement.setString(1, artistNewName);

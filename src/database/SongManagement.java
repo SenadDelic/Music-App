@@ -98,9 +98,9 @@ public class SongManagement {
     // add update for track !!
     public void updateSong(Scanner input) {
         System.out.print("Enter what song you want to rename = ");
-        String oldTitle = input.next();
+        String oldTitle = input.nextLine();
         System.out.print("Enter new song name: ");
-        String title = input.next();
+        String title = input.nextLine();
 
         try (PreparedStatement preparedStatement = ConnectionManagement.getInstance().getConnection().prepareStatement(Constants.UPDATE_SONG_TITLE)) {
             preparedStatement.setString(1, title);
