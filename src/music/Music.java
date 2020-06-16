@@ -1,4 +1,4 @@
-package com.company;
+package music;
 
 import database.AlbumManagement;
 import database.ArtistManagement;
@@ -71,7 +71,8 @@ public class Music {
                     songManagement.deleteSong(input);
                     break;
                 default:
-                    System.out.println("Wrong input!!");
+                    if (choice != 0)
+                        System.out.println("Wrong input!!");
             }
         } while (choice != 0);
         ConnectionManagement.getInstance().closeConnection();

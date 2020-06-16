@@ -1,4 +1,4 @@
-package com.company;
+package music;
 
 public class Menu {
 
