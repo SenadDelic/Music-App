@@ -64,5 +64,4 @@ public class Constants {
             "WHERE " + COLUMN_SONG_TITLE + "= ?";
     public static final String QUERY_SONG = "SELECT * FROM " + TABLE_SONGS;
 
-
 }

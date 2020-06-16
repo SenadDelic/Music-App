@@ -27,7 +27,7 @@ public class Music {
         do {
             Menu.menu();
             choice = input.nextInt();
-            input.nextLine();
+            input.nextLine(); // fixed skipping nextLine()
             switch (choice) {
                 case 1:
                     albumManagement.insertAlbum(input, connection);
@@ -36,22 +36,15 @@ public class Music {
                     artistManagement.insertArtist(input, connection);
                     break;
                 case 3:
-                    // get the \n
                     songManagement.insertSong(input, connection);
                     break;
-                // bug with nextLine
                 case 4:
-                    //input.nextLine();
                     albumManagement.updateAlbum(input);
                     break;
-                // bug with nextLine
                 case 5:
-                    //input.nextLine();
                     artistManagement.updateArtist(input);
                     break;
-                // bug with nextLine
                 case 6:
-                    //input.nextLine();
                     songManagement.updateSong(input);
                     break;
                 case 7:
@@ -68,19 +61,13 @@ public class Music {
                     songs.stream().map(song -> "Id = " + song.getId() + " Track = " + song.getTrack() + " Title = " + song.getTitle()
                             + " Album = " + song.getAlbumId()).forEach(System.out::println);
                     break;
-                // bug with nextLine
                 case 10:
-                    // input.nextLine();
                     albumManagement.deleteAlbum(input);
                     break;
-                // bug with nextLine?
                 case 11:
-                    //input.nextLine();
                     artistManagement.deleteArtist(input);
                     break;
-                // bug with nextLine?
                 case 12:
-                    //input.nextLine();
                     songManagement.deleteSong(input);
                     break;
                 default:
