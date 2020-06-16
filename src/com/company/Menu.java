@@ -31,5 +31,4 @@ public class Menu {
         System.out.println("********* Thank you. Have a nice day. **********");
         System.out.println("------------------------------------------------");
     }
-
 }

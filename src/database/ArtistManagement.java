@@ -26,7 +26,6 @@ public class ArtistManagement {
                 artistList.add(artist);
             }
             return artistList;
-            //artistList.stream().map(artist -> "Id = " + artist.getId() + " Name = " + artist.getName()).forEach(System.out::println);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,8 +96,6 @@ public class ArtistManagement {
         }
     }
 
-    // Setting update with id?
-    // Replace artistOldName, let user enter ..
     public void updateArtist(Scanner input) {
         System.out.print("Enter what artist you want to rename: ");
         String artistOldName = input.nextLine();

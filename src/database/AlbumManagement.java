@@ -74,8 +74,6 @@ public class AlbumManagement {
         }
     }
 
-    // Replace oldName, let user enter..
-    // String newAlbumName, String oldName, int albumId
     public void updateAlbum(Scanner input) {
         String newAlbumName, oldName;
         int albumId;
